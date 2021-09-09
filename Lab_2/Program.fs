@@ -6,7 +6,7 @@ open System.Text
 // See the 'F# Tutorial' project for more help.
 
 // Define a function to construct a message to print
-let lab1 s = 
+let lab1 anythingToStart = 
        let list:list<int> = [0]
        let rec ContainsNine n =
            if n = 0 
@@ -19,6 +19,9 @@ let lab1 s =
        //for i in need do
            //printfn "%d" i
        printfn "%d" (List.sum need)
+
+printfn "\tЛабораторная работа №1"
+lab1(123)
    
 let lab2 path = 
     let book = System.IO.File.ReadAllText(path,Encoding.UTF8)
@@ -31,16 +34,21 @@ let lab2 path =
         text.ToCharArray()
         |> Array.sumBy proj
     
-    printfn $"{count book} of {book.Length}"
-    
+    printfn $"Найдено:{count book} Всего:{book.Length}"
+
+printfn "\n\tЛабораторная работа №2"  
+
 lab2 @"C:\Users\1\Desktop\War.txt"
 
-let lab3 (arr: int array) =    
+
+let lab3 (arr: int array) =
+    printfn "Массив до: \t%A" arr 
     for i in 1 .. arr.Length - 2  do
           if arr.[i-1] % 2 <> 0 && arr.[i+1] % 2 <> 0 && arr.[i] % 2 = 0 then
                 Array.set arr i (arr.[i]/2)
-    printf "%A" arr 
-             
+    printfn "Массив после: \t%A" arr 
+
+printfn "\n\tЛабораторная работа №3"            
 lab3([|1;2;3;4;5;6;7|])
 
 // ----- Unused code ----- 
