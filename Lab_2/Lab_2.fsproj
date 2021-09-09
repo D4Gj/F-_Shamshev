@@ -6,6 +6,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Include="War.txt" />
     <Compile Include="Program.fs" />
   </ItemGroup>
+
+  <ItemGroup />
 </Project>
