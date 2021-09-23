@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>net472</TargetFramework> 
@@ -11,6 +11,4 @@
     <Content Include="War.txt" />
     <Compile Include="Program.fs" />
   </ItemGroup>
-
-  <ItemGroup />
 </Project>

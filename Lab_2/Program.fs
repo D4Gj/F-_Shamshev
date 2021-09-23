@@ -1,5 +1,7 @@
 ﻿open System
 open System.Text
+open System.Drawing
+
 
 
 // Learn more about F# at http://docs.microsoft.com/dotnet/fsharp
@@ -43,7 +45,7 @@ let lab2 path =
 
 printfn "\n\tЛабораторная работа №2"  
 
-lab2 @"C:\Users\inzad\Source\Repos\D4Gj\F-_Shamshev\Lab_2\War.txt"
+//lab2 @"C:\Users\inzad\Source\Repos\D4Gj\F-_Shamshev\Lab_2\War.txt"
 
 
 let lab3 (arr: int array) =
@@ -70,12 +72,14 @@ let lab5 path =
         printfn $"Найдено:{count book} Всего:{book.Length}"
     }
 
-printfn "\n\tЛабораторная работа №5"   
-files
-|>List.map lab5
-|>Async.Parallel
-|>Async.RunSynchronously
-|> ignore
+let lab5Run 0 = 
+    printfn "\n\tЛабораторная работа №5"   
+    files
+    |>List.map lab5
+    |>Async.Parallel
+    |>Async.RunSynchronously
+    |> ignore
+
 
 [<AbstractClass>]
 type Person(name) = 
@@ -87,16 +91,81 @@ type Chief(name) =
 type Worker(name) = 
     inherit Person(name)
 
+let chief = Chief("Andrew")
+let worker = Worker("Alexey")
 
-// ----- Unused code ----- 
+let lab4 0 =
+    printfn "\n\tЛабораторная работа №4"   
 
-/// lab 2 N**2
+    printf $"Chief {chief.Name} paying salary to {worker.Name} " 
+  
 
-//let finding str chars =
-//    let mutable counter = 0
-//    for wordChar in str do
-//        for chr in chars do            
-//             if chr.Equals(wordChar) then
-//                 printfn $"Found chars: {counter}"
-//                 counter <- counter + 1
-//    printfn $"Found {counter} chars"
+type Rule = char * char list
+type Grammar = Rule list
+
+let FindSubst c (gr:Grammar) = 
+   match List.tryFind (fun (x,S) -> x=c) gr with
+     | Some(x,S) -> S
+     | None -> [c]
+
+let Apply (gr:Grammar) L =
+   List.collect (fun c -> FindSubst c gr) L
+
+let rec NApply n gr L = 
+   if n>0 then Apply gr (NApply (n-1) gr L)
+   else L
+
+let str (s:string) =
+    [for c in s -> c]
+
+let toString (xs:char list) =
+    let sb = System.Text.StringBuilder(xs.Length)
+    xs |> List.iter (sb.Append >> ignore)
+    sb.ToString()
+
+let TurtleBitmapVisualizer n delta cmd =
+    let W,H = 1600,1600
+    let b = new Bitmap(W,H)
+    let g = Graphics.FromImage(b)
+    let pen = new Pen(Color.Black)
+    let NewCoord (x:float) (y:float) phi =
+       let nx = x+n*cos(phi)
+       let ny = y+n*sin(phi)
+       (nx,ny,phi)
+    let ProcessCommand x y phi = function
+     | 'f' -> NewCoord x y phi
+     | '+' -> (x,y,phi+delta)
+     | '-' -> (x,y,phi-delta)
+     | 'F' -> 
+         let (nx,ny,phi) = NewCoord x y phi
+         g.DrawLine(pen,(float32)x,(float32)y,(float32)nx,(float32)ny)
+         (nx,ny,phi)
+     | _ -> (x,y,phi)     
+    let rec draw x y phi = function
+     | [] -> ()
+     | h::t ->
+         let (nx,ny,nphi) = ProcessCommand x y phi h
+         draw nx ny nphi t
+    draw (float(W)/2.0) (float(H)/2.0) 0. cmd
+    b
+
+let lab6 e =
+    let gr = [('F',str "F+F--F+")]
+    let lsys = NApply 2 gr (str "+F+F+F+F+")
+    lsys |> toString
+    let B = TurtleBitmapVisualizer 40.0 (Math.PI/180.0*60.0) lsys
+    let path = @"C:\lab\bitmap.jpg"
+    B.Save(path)
+    printf $"Bitmap created in {path}"
+
+[<EntryPoint>]
+let main argv =    
+    lab4 0       
+    //lab5Run 0   
+    lab6 0
+    0 // return an integer exit code
+    
+
+
+
+
