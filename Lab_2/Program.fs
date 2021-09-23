@@ -156,7 +156,7 @@ let lab6 e =
     let B = TurtleBitmapVisualizer 40.0 (Math.PI/180.0*60.0) lsys
     let path = @"C:\lab\bitmap.jpg"
     B.Save(path)
-    printf $"Bitmap created in {path}"
+    printfn $"Bitmap created in {path}"
 
 [<EntryPoint>]
 let main argv =    
