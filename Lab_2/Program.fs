@@ -6,6 +6,11 @@ open System.Text
 // See the 'F# Tutorial' project for more help.
 
 // Define a function to construct a message to print
+let files = [
+    "C:\Users\inzad\Source\Repos\D4Gj\F-_Shamshev\Lab_2\War.txt"
+    "C:\Users\inzad\Source\Repos\D4Gj\F-_Shamshev\Lab_2\War1.txt"
+    "C:\Users\inzad\Source\Repos\D4Gj\F-_Shamshev\Lab_2\War2.txt"
+]
 let lab1 anythingToStart = 
        let list:list<int> = [0]
        let rec ContainsNine n =
@@ -38,7 +43,7 @@ let lab2 path =
 
 printfn "\n\tЛабораторная работа №2"  
 
-lab2 @"C:\Users\1\Desktop\War.txt"
+lab2 @"C:\Users\inzad\Source\Repos\D4Gj\F-_Shamshev\Lab_2\War.txt"
 
 
 let lab3 (arr: int array) =
@@ -50,6 +55,38 @@ let lab3 (arr: int array) =
 
 printfn "\n\tЛабораторная работа №3"            
 lab3([|1;2;3;4;5;6;7|])
+
+
+let lab5 path =
+    async{
+        let book = System.IO.File.ReadAllText(path,Encoding.UTF8)        
+        let proj x =
+            if Array.contains x [| 'a';'e';'i';'o';'u' |] then 1
+                else 0
+        let count (text: string) =
+                text.ToCharArray()
+                |> Array.sumBy proj
+            
+        printfn $"Найдено:{count book} Всего:{book.Length}"
+    }
+
+printfn "\n\tЛабораторная работа №5"   
+files
+|>List.map lab5
+|>Async.Parallel
+|>Async.RunSynchronously
+|> ignore
+
+[<AbstractClass>]
+type Person(name) = 
+    member val Name = name with get,set
+
+type Chief(name) = 
+    inherit Person(name)
+
+type Worker(name) = 
+    inherit Person(name)
+
 
 // ----- Unused code ----- 
 
